@@ -24,7 +24,9 @@ Sistema completo de limpeza e otimização do Windows com duas interfaces: **CLI
 
 ### Versão GUI (Executável)
 
-1. Baixe o executável `LimpezaWindows.exe` da seção [Releases](../../releases)
+1. Baixe o executável `LimpezaWindows.exe` (~10 MB):
+   - **Direto do repositório:** [LimpezaWindows.exe](LimpezaWindows.exe)
+   - **Ou clone o repositório:** `git clone git@github.com:pcarvalho-dev/limpar-windows.git`
 2. Clique duplo no executável
 3. Aceite as permissões de Administrador (UAC)
 4. Pronto! Use a interface gráfica
