@@ -97,17 +97,69 @@ def safe_remove(path):
     return size_freed
 
 
-def clean_temp_folders():
+def get_available_drives():
+    """Detecta todos os drives disponíveis no sistema"""
+    drives = []
+    try:
+        import string
+        for letter in string.ascii_uppercase:
+            drive = f"{letter}:\\"
+            if os.path.exists(drive):
+                try:
+                    # Verifica se é um drive fixo (HD/SSD) usando ctypes
+                    drive_type = ctypes.windll.kernel32.GetDriveTypeW(drive)
+                    # DRIVE_FIXED = 3 (HD/SSD local)
+                    if drive_type == 3:
+                        # Tenta obter informações do volume
+                        total_bytes = ctypes.c_ulonglong(0)
+                        free_bytes = ctypes.c_ulonglong(0)
+
+                        if ctypes.windll.kernel32.GetDiskFreeSpaceExW(
+                            drive, None, ctypes.pointer(total_bytes), ctypes.pointer(free_bytes)
+                        ):
+                            total_gb = total_bytes.value / (1024**3)
+                            free_gb = free_bytes.value / (1024**3)
+                            used_gb = total_gb - free_gb
+
+                            drives.append({
+                                'letter': letter,
+                                'path': drive,
+                                'total_gb': total_gb,
+                                'free_gb': free_gb,
+                                'used_gb': used_gb,
+                                'label': f"{letter}: - {total_gb:.1f} GB ({free_gb:.1f} GB livre)"
+                            })
+                except:
+                    pass
+    except:
+        # Fallback: pelo menos retorna C:\
+        drives.append({
+            'letter': 'C',
+            'path': 'C:\\',
+            'total_gb': 0,
+            'free_gb': 0,
+            'used_gb': 0,
+            'label': 'C: - Drive do Sistema'
+        })
+
+    return drives
+
+
+def clean_temp_folders(selected_drives=None):
     """Limpa pastas temporárias do Windows"""
+    if selected_drives is None:
+        selected_drives = ['C']
+
     total_freed = 0
-    temp_paths = [
+
+    # Pastas temporárias do usuário (independente de drive)
+    user_temp_paths = [
         os.environ.get('TEMP'),
         os.environ.get('TMP'),
-        'C:\\Windows\\Temp',
         os.path.join(os.environ.get('LOCALAPPDATA', ''), 'Temp'),
     ]
 
-    for temp_path in temp_paths:
+    for temp_path in user_temp_paths:
         if temp_path and os.path.exists(temp_path):
             try:
                 for item in os.listdir(temp_path):
@@ -115,6 +167,18 @@ def clean_temp_folders():
                     total_freed += safe_remove(item_path)
             except:
                 pass
+
+    # Pastas temporárias do sistema em cada drive selecionado
+    for drive_letter in selected_drives:
+        system_temp = f"{drive_letter}:\\Windows\\Temp"
+        if os.path.exists(system_temp):
+            try:
+                for item in os.listdir(system_temp):
+                    item_path = os.path.join(system_temp, item)
+                    total_freed += safe_remove(item_path)
+            except:
+                pass
+
     return total_freed
 
 
@@ -181,17 +245,29 @@ def clean_windows_update_cache():
     return total_freed
 
 
-def clean_recycle_bin():
+def clean_recycle_bin(selected_drives=None):
     """Esvazia a lixeira"""
-    recycle_bin = 'C:\\$Recycle.Bin'
-    size_before = get_folder_size(recycle_bin) if os.path.exists(recycle_bin) else 0
+    if selected_drives is None:
+        selected_drives = ['C']
+
+    total_freed = 0
+
+    # Calcula tamanho de todas as lixeiras
+    for drive_letter in selected_drives:
+        recycle_bin = f'{drive_letter}:\\$Recycle.Bin'
+        if os.path.exists(recycle_bin):
+            total_freed += get_folder_size(recycle_bin)
+
+    # Esvazia todas as lixeiras de uma vez
     try:
+        # O comando Clear-RecycleBin sem drive específico limpa todas
         subprocess.run(['powershell.exe', '-Command',
                        'Clear-RecycleBin -Force -ErrorAction SilentlyContinue'],
                       capture_output=True, timeout=30)
     except:
         pass
-    return size_before
+
+    return total_freed
 
 
 def clean_node_cache():
@@ -413,6 +489,14 @@ class CleanupGUI:
              "enabled": tk.BooleanVar(value=False)},
         ]
 
+        # Detecta drives disponíveis
+        self.available_drives = get_available_drives()
+        self.drive_vars = {}
+        for drive in self.available_drives:
+            # C:\ marcado por padrão, outros desmarcados
+            default_value = drive['letter'] == 'C'
+            self.drive_vars[drive['letter']] = tk.BooleanVar(value=default_value)
+
         self.is_cleaning = False
         self.create_widgets()
 
@@ -478,7 +562,53 @@ class CleanupGUI:
         canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
         canvas.configure(yscrollcommand=scrollbar.set)
 
-        # Criar checkboxes
+        # Seção de seleção de drives
+        drives_frame = tk.Frame(scrollable_frame, bg=self.bg_medium, relief=tk.FLAT)
+        drives_frame.pack(fill=tk.X, pady=(0, 10), padx=5)
+
+        drives_header = tk.Label(
+            drives_frame,
+            text="💾 Selecione os Drives para Limpar:",
+            bg=self.bg_medium,
+            fg=self.accent,
+            font=("Segoe UI", 10, "bold"),
+            anchor=tk.W
+        )
+        drives_header.pack(anchor=tk.W, padx=10, pady=(10, 5))
+
+        drives_desc = tk.Label(
+            drives_frame,
+            text="Escolha quais HDs/SSDs serão limpos (afeta Temp e Lixeira)",
+            bg=self.bg_medium,
+            fg=self.text_dim,
+            font=("Segoe UI", 8),
+            anchor=tk.W
+        )
+        drives_desc.pack(anchor=tk.W, padx=10, pady=(0, 5))
+
+        # Checkboxes dos drives
+        for drive in self.available_drives:
+            drive_cb = tk.Checkbutton(
+                drives_frame,
+                text=drive['label'],
+                variable=self.drive_vars[drive['letter']],
+                bg=self.bg_medium,
+                fg=self.text_color,
+                selectcolor=self.bg_light,
+                activebackground=self.bg_medium,
+                activeforeground=self.accent,
+                font=("Segoe UI", 9),
+                cursor="hand2",
+                relief=tk.FLAT,
+                highlightthickness=0
+            )
+            drive_cb.pack(anchor=tk.W, padx=25, pady=2)
+
+        # Separador
+        separator = tk.Frame(scrollable_frame, bg=self.text_dim, height=2)
+        separator.pack(fill=tk.X, pady=10, padx=5)
+
+        # Criar checkboxes de tarefas
         for i, task in enumerate(self.tasks):
             self.create_task_checkbox(scrollable_frame, task, i)
 
@@ -710,6 +840,15 @@ class CleanupGUI:
         total_freed = 0
         start_time = time.time()
 
+        # Obtém drives selecionados
+        selected_drives = [letter for letter, var in self.drive_vars.items() if var.get()]
+
+        if not selected_drives:
+            self.log("⚠ Nenhum drive selecionado! Usando C:\\ por padrão", "warning")
+            selected_drives = ['C']
+
+        self.log(f"💾 Drives selecionados: {', '.join([d + ':' for d in selected_drives])}\n")
+
         self.log("\n" + "="*50)
         self.log("INICIANDO LIMPEZA...", "info")
         self.log("="*50 + "\n")
@@ -722,7 +861,12 @@ class CleanupGUI:
             self.status_label.config(text=f"Limpando: {task_name}")
 
             try:
-                space = task['func']()
+                # Funções que precisam de drives selecionados
+                if task['func'] in [clean_temp_folders, clean_recycle_bin]:
+                    space = task['func'](selected_drives)
+                else:
+                    space = task['func']()
+
                 total_freed += space
 
                 if space > 0:

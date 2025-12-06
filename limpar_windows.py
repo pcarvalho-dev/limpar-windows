@@ -98,11 +98,54 @@ def safe_remove(path, pbar=None):
     return size_freed
 
 
+def get_available_drives():
+    """Detecta todos os drives disponíveis no sistema"""
+    drives = []
+    try:
+        import string
+        for letter in string.ascii_uppercase:
+            drive = f"{letter}:\\"
+            if os.path.exists(drive):
+                try:
+                    # Verifica se é um drive fixo (HD/SSD)
+                    drive_type = ctypes.windll.kernel32.GetDriveTypeW(drive)
+                    # DRIVE_FIXED = 3
+                    if drive_type == 3:
+                        total_bytes = ctypes.c_ulonglong(0)
+                        free_bytes = ctypes.c_ulonglong(0)
+
+                        if ctypes.windll.kernel32.GetDiskFreeSpaceExW(
+                            drive, None, ctypes.pointer(total_bytes), ctypes.pointer(free_bytes)
+                        ):
+                            total_gb = total_bytes.value / (1024**3)
+                            free_gb = free_bytes.value / (1024**3)
+
+                            drives.append({
+                                'letter': letter,
+                                'path': drive,
+                                'total_gb': total_gb,
+                                'free_gb': free_gb,
+                                'label': f"{letter}: - {total_gb:.1f} GB ({free_gb:.1f} GB livre)"
+                            })
+                except:
+                    pass
+    except:
+        drives.append({
+            'letter': 'C',
+            'path': 'C:\\',
+            'total_gb': 0,
+            'free_gb': 0,
+            'label': 'C: - Drive do Sistema'
+        })
+
+    return drives
+
+
 # ============================================================================
 # FUNÇÕES DE LIMPEZA
 # ============================================================================
 
-def clean_temp_folders(pbar=None):
+def clean_temp_folders(pbar=None, selected_drives=None):
     """Limpa pastas temporárias do Windows"""
     total_freed = 0
     temp_paths = [
@@ -483,9 +526,54 @@ def interactive_menu(tasks):
     return tasks
 
 
-def execute_cleanup(tasks):
+def select_drives_menu():
+    """Menu de seleção de drives"""
+    drives = get_available_drives()
+
+    if len(drives) == 1:
+        # Apenas C:\, retorna automaticamente
+        return [drives[0]['letter']]
+
+    print_header()
+    print(Fore.CYAN + Style.BRIGHT + "💾 Selecione os Drives para Limpar:\n")
+    print(Fore.WHITE + Style.DIM + "(Afeta: Arquivos Temporários e Lixeira)\n")
+
+    drive_selection = {}
+    for drive in drives:
+        # C:\ marcado por padrão
+        drive_selection[drive['letter']] = (drive['letter'] == 'C')
+        checkbox = "[✓]" if drive_selection[drive['letter']] else "[ ]"
+        color = Fore.GREEN if drive_selection[drive['letter']] else Fore.WHITE
+        print(color + f"  {checkbox} {drive['label']}")
+
+    print()
+    print(Fore.YELLOW + "Digite as letras dos drives separadas por vírgula (ex: C,D,E)")
+    print(Fore.WHITE + "Ou pressione ENTER para usar a seleção atual")
+    print()
+
+    choice = input(Fore.CYAN + "Drives: ").strip().upper()
+
+    if choice:
+        # Parse da entrada
+        selected = []
+        for letter in choice.replace(',', ' ').replace(';', ' ').split():
+            letter = letter.strip().replace(':', '')
+            if letter and any(d['letter'] == letter for d in drives):
+                selected.append(letter)
+
+        if selected:
+            return selected
+
+    # Retorna drives marcados
+    return [letter for letter, enabled in drive_selection.items() if enabled]
+
+
+def execute_cleanup(tasks, selected_drives=None):
     """Executa a limpeza com barra de progresso"""
     print_header()
+
+    if selected_drives is None:
+        selected_drives = ['C']
 
     enabled_tasks = [t for t in tasks if t.enabled]
 
@@ -493,6 +581,7 @@ def execute_cleanup(tasks):
         print(Fore.RED + "Nenhuma tarefa selecionada!")
         return
 
+    print(Fore.CYAN + f"💾 Drives selecionados: {', '.join([d + ':' for d in selected_drives])}\n")
     print(Fore.CYAN + Style.BRIGHT + "Iniciando limpeza...\n")
 
     total_freed = 0
@@ -508,7 +597,12 @@ def execute_cleanup(tasks):
                  ncols=70) as pbar:
 
             try:
-                space = task.function(pbar)
+                # Funções que precisam de drives
+                if task.function in [clean_temp_folders, clean_recycle_bin]:
+                    space = task.function(pbar, selected_drives)
+                else:
+                    space = task.function(pbar)
+
                 task.space_freed = space
                 total_freed += space
                 pbar.n = 100
@@ -610,10 +704,15 @@ def main():
     # Mostra menu interativo
     tasks = interactive_menu(tasks)
 
+    # Seleção de drives
+    selected_drives = select_drives_menu()
+
     # Confirmação final
     print_header()
     enabled_count = sum(1 for t in tasks if t.enabled)
+    drives_str = ', '.join([d + ':' for d in selected_drives])
     print(Fore.YELLOW + f"Você selecionou {enabled_count} tarefa(s) para executar.")
+    print(Fore.CYAN + f"Drives a limpar: {drives_str}")
     print()
     confirm = input(Fore.CYAN + "Deseja continuar? (S/n): ").strip().lower()
 
@@ -622,7 +721,7 @@ def main():
         sys.exit(0)
 
     # Executa a limpeza
-    execute_cleanup(tasks)
+    execute_cleanup(tasks, selected_drives)
 
 
 if __name__ == "__main__":
