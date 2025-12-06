@@ -1,0 +1,288 @@
+═══════════════════════════════════════════════════════════════════════════
+  🧹 LIMPEZA INTELIGENTE DO WINDOWS - SISTEMA COMPLETO
+  Versão 2.0 - CLI + GUI
+═══════════════════════════════════════════════════════════════════════════
+
+Olá! Você tem DUAS versões do sistema de limpeza disponíveis:
+
+📦 ESCOLHA SUA VERSÃO FAVORITA
+───────────────────────────────────────────────────────────────────────────
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│  1️⃣  VERSÃO GUI - INTERFACE GRÁFICA MODERNA (RECOMENDADO!)              │
+└─────────────────────────────────────────────────────────────────────────┘
+
+   📍 Localização: ÁREA DE TRABALHO
+
+   📂 Arquivos:
+      • LimpezaWindows.exe - CLIQUE DUPLO AQUI! ⭐
+      • Limpeza Windows GUI (Admin).bat - Executar como admin
+
+   ✨ Características:
+      ✅ Interface gráfica moderna e bonita
+      ✅ Tema escuro profissional
+      ✅ Checkboxes visuais
+      ✅ Barra de progresso animada
+      ✅ Log colorido em tempo real
+      ✅ NÃO PRECISA PYTHON!
+      ✅ Arquivo único .exe portátil
+      ✅ Intuitivo - use com o mouse
+
+   👥 Ideal para: TODOS OS USUÁRIOS
+
+   📖 Manual: README_GUI.txt
+
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│  2️⃣  VERSÃO CLI - INTERFACE DE TERMINAL INTERATIVA                      │
+└─────────────────────────────────────────────────────────────────────────┘
+
+   📍 Localização: ÁREA DE TRABALHO
+
+   📂 Arquivos:
+      • Limpeza Windows.bat - Clique duplo aqui
+      • limpar_windows.py - Código fonte
+
+   ✨ Características:
+      ✅ Interface de texto colorida
+      ✅ Navegação com teclado (W/S/números)
+      ✅ Mais leve e rápida
+      ✅ Ideal para automação
+      ✅ Funciona sem mouse
+      ✅ PRECISA PYTHON instalado
+
+   👥 Ideal para: Usuários avançados, desenvolvedores
+
+   📖 Manual: README_LIMPEZA.txt
+
+
+═══════════════════════════════════════════════════════════════════════════
+  🎯 QUAL VERSÃO USAR?
+═══════════════════════════════════════════════════════════════════════════
+
+SE VOCÊ...                              →  USE...
+────────────────────────────────────────────────────────────────────────
+Não sabe programação                     →  ⭐ VERSÃO GUI (.exe)
+Prefere usar mouse                       →  ⭐ VERSÃO GUI (.exe)
+Quer interface bonita                    →  ⭐ VERSÃO GUI (.exe)
+Não tem Python instalado                 →  ⭐ VERSÃO GUI (.exe)
+Precisa de algo portátil                 →  ⭐ VERSÃO GUI (.exe)
+
+Prefere terminal                         →  VERSÃO CLI (.bat)
+Gosta de usar teclado                    →  VERSÃO CLI (.bat)
+É desenvolvedor                          →  VERSÃO CLI (.bat)
+Quer automatizar                         →  VERSÃO CLI (.bat)
+
+
+═══════════════════════════════════════════════════════════════════════════
+  🚀 COMEÇANDO - 3 PASSOS
+═══════════════════════════════════════════════════════════════════════════
+
+VERSÃO GUI (RECOMENDADA):
+
+  1. Vá para a ÁREA DE TRABALHO
+  2. Clique duplo em: LimpezaWindows.exe
+  3. ⭐ Aceite as permissões de Administrador (UAC)
+  4. Marque as opções e clique "INICIAR LIMPEZA"
+
+  Pronto! ✅
+
+  💡 O executável SEMPRE solicita permissões de admin automaticamente!
+
+
+VERSÃO CLI (ALTERNATIVA):
+
+  1. Vá para a ÁREA DE TRABALHO
+  2. Clique duplo em: Limpeza Windows.bat
+  3. Digite números para marcar, ENTER para confirmar
+
+  Pronto! ✅
+
+
+═══════════════════════════════════════════════════════════════════════════
+  📋 O QUE AS DUAS VERSÕES LIMPAM (IDÊNTICO)
+═══════════════════════════════════════════════════════════════════════════
+
+  1. ✅ Arquivos Temporários do Windows
+  2. ✅ Prefetch do Windows
+  3. ✅ Cache de Navegadores (mantém senhas e sessões!)
+  4. ✅ Cache do Windows Update
+  5. ✅ Lixeira
+  6. ✅ Cache do Node.js/npm
+  7. ⚪ Docker - Apenas Não Utilizados (opcional)
+  8. ⚠️ Docker - REMOVER TUDO (opcional, perigoso!)
+  9. ✅ Logs Antigos do Windows (>30 dias)
+ 10. ✅ Cache de Miniaturas
+ 11. ⚪ Limpeza de Disco Windows (opcional)
+
+Liberação média: 2GB - 10GB+
+Tempo médio: 1-5 minutos
+
+
+═══════════════════════════════════════════════════════════════════════════
+  🔒 100% SEGURO - GARANTIDO
+═══════════════════════════════════════════════════════════════════════════
+
+  ✅ NÃO remove senhas de navegadores
+  ✅ NÃO remove sessões (continua logado)
+  ✅ NÃO remove histórico de navegação
+  ✅ NÃO remove favoritos
+  ✅ NÃO remove programas instalados
+  ✅ NÃO remove jogos ou saves
+  ✅ NÃO remove documentos pessoais
+  ✅ NÃO remove node_modules dos projetos
+
+  ⚠️ Remove APENAS cache e arquivos temporários
+
+
+═══════════════════════════════════════════════════════════════════════════
+  📂 ESTRUTURA DE ARQUIVOS
+═══════════════════════════════════════════════════════════════════════════
+
+📁 ÁREA DE TRABALHO (Desktop):
+   ├── 📄 LimpezaWindows.exe ⭐ VERSÃO GUI - CLIQUE AQUI!
+   ├── 📄 Limpeza Windows GUI (Admin).bat - GUI como admin
+   └── 📄 Limpeza Windows.bat - Versão CLI
+
+📁 C:\Users\pablo:
+   ├── 📄 LEIA-ME_PRIMEIRO.txt ⭐ ESTE ARQUIVO
+   ├── 📄 README_GUI.txt - Manual da versão GUI
+   ├── 📄 README_LIMPEZA.txt - Manual da versão CLI
+   ├── 📄 limpar_windows_gui.py - Código fonte GUI
+   ├── 📄 limpar_windows.py - Código fonte CLI
+   └── 📄 executar_limpeza.bat - Alternativa CLI
+
+📁 C:\Users\pablo\dist:
+   └── 📄 LimpezaWindows.exe - Backup do executável
+
+
+═══════════════════════════════════════════════════════════════════════════
+  💡 DICAS IMPORTANTES
+═══════════════════════════════════════════════════════════════════════════
+
+  1. ⭐ VERSÃO GUI (LimpezaWindows.exe):
+     ✅ JÁ EXECUTA COMO ADMIN AUTOMATICAMENTE!
+     → Apenas clique duplo - ele pede permissões sozinho
+     → Você verá a tela do UAC (Controle de Conta)
+     → Clique "Sim" e pronto!
+
+  2. 🌐 FECHE OS NAVEGADORES antes de executar
+     → Chrome, Edge, Firefox, etc.
+
+  3. 🔄 REINICIE O PC após a limpeza
+     → Para completar a remoção de alguns arquivos
+
+  4. 📅 EXECUTE MENSALMENTE
+     → Mantenha seu PC sempre rápido e limpo
+
+  5. ⚠️ DOCKER OPÇÃO 8 = PERIGOSO!
+     → Só marque se souber o que está fazendo
+     → Remove TUDO do Docker (imagens, containers, volumes)
+
+
+═══════════════════════════════════════════════════════════════════════════
+  🎨 PREVIEW DA INTERFACE GUI
+═══════════════════════════════════════════════════════════════════════════
+
+   ╔════════════════════════════════════════════════════════════╗
+   ║  🧹 LIMPEZA INTELIGENTE DO WINDOWS                         ║
+   ║     Versão 2.0 - Interface Gráfica Moderna                 ║
+   ╚════════════════════════════════════════════════════════════╝
+
+   ┌──────────────────────────────┬─────────────────────────────┐
+   │ OPÇÕES DE LIMPEZA            │ LOG DE EXECUÇÃO             │
+   │                              │                             │
+   │ ☑ 1. Arquivos Temporários    │ [14:23:45] Sistema pronto   │
+   │    Limpa TEMP, TMP...        │ [14:24:12] Iniciando...     │
+   │                              │ [14:24:15] ✓ 1.25 GB        │
+   │ ☑ 2. Prefetch do Windows     │ [14:24:18] ✓ 156 MB         │
+   │    Remove arquivos .pf       │                             │
+   │                              │ ▓▓▓▓▓▓▓▓▓░░░ 65%            │
+   │ ☑ 3. Cache de Navegadores    │                             │
+   │    Mantém senhas/sessões     │ Limpando: Cache...          │
+   │                              │                             │
+   │ ☐ 7. Docker - Não Usados     │                             │
+   │    Remove containers órfãos  │                             │
+   └──────────────────────────────┴─────────────────────────────┘
+
+   [✓ Marcar Tudo] [✗ Desmarcar Tudo]  [🚀 INICIAR] [✕ Sair]
+
+
+═══════════════════════════════════════════════════════════════════════════
+  🐛 PROBLEMAS COMUNS
+═══════════════════════════════════════════════════════════════════════════
+
+❓ "Windows protegeu seu PC" ao abrir .exe
+   → Clique "Mais informações" → "Executar assim mesmo"
+   → Normal! Executável sem assinatura digital
+   → Totalmente seguro! Código aberto disponível
+
+❓ Versão CLI não abre
+   → Você precisa ter Python instalado
+   → Use a versão GUI (.exe) - não precisa Python!
+
+❓ "Erro de permissão" durante limpeza
+   → Execute como Administrador
+   → Feche programas que podem estar usando arquivos
+
+❓ Pouco espaço liberado
+   → Normal se seu PC já estava limpo
+   → Tente executar mensalmente
+
+❓ Navegador não limpou
+   → Feche TODOS navegadores antes de executar
+   → Navegadores bloqueiam acesso ao cache quando abertos
+
+
+═══════════════════════════════════════════════════════════════════════════
+  📞 INFORMAÇÕES TÉCNICAS
+═══════════════════════════════════════════════════════════════════════════
+
+VERSÃO GUI:
+  • Linguagem: Python 3.13
+  • Framework: Tkinter (nativo)
+  • Compilador: PyInstaller 6.17
+  • Tamanho: ~15-20 MB (inclui Python completo)
+  • Compatibilidade: Windows 7+
+  • Tema: Escuro moderno
+  • Resolução: 900x750 pixels
+
+VERSÃO CLI:
+  • Linguagem: Python 3.13
+  • Bibliotecas: colorama, tqdm
+  • Funciona em: Terminal, PowerShell, CMD
+  • Compatibilidade: Windows 7+
+
+AMBAS:
+  • Código aberto
+  • Sem telemetria
+  • Sem conexão internet necessária
+  • Processamento local
+  • Privacidade total
+
+
+═══════════════════════════════════════════════════════════════════════════
+  ⭐ RECOMENDAÇÃO FINAL
+═══════════════════════════════════════════════════════════════════════════
+
+  Para 99% dos usuários:
+
+    👉 USE A VERSÃO GUI (LimpezaWindows.exe)
+
+    ✅ Mais fácil
+    ✅ Mais bonita
+    ✅ Não precisa instalar nada
+    ✅ Apenas clique duplo e pronto!
+
+
+  A versão CLI está disponível se você preferir terminal,
+  mas a GUI faz exatamente a mesma limpeza com interface moderna!
+
+
+═══════════════════════════════════════════════════════════════════════════
+
+  🎉 Aproveite seu Windows mais limpo e rápido!
+
+  Criado com 💙 para manter seu PC sempre otimizado
+
+═══════════════════════════════════════════════════════════════════════════
